@@ -1,0 +1,2 @@
+管理员登录：http://localhost:8080/onlinetest/home/managerLogin.action
+用户登录/注册：http://localhost:8080/onlinetest/home/index.action

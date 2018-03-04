@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ttc.ssm.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="com.ttc.ssm.po.User">
+		<id column="userid" property="userid" jdbcType="INTEGER" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="userpasswd" property="userpasswd" jdbcType="VARCHAR" />
+		<result column="userage" property="userage" jdbcType="INTEGER" />
+		<result column="usersex" property="usersex" jdbcType="VARCHAR" />
+		<result column="role" property="role" jdbcType="VARCHAR" />
+		<result column="level" property="level" jdbcType="INTEGER" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<insert id="insertuser" parameterType="com.ttc.ssm.po.User">
+		insert into user (username,userpasswd,userage, usersex, email)
+		values
+		(#{username},#{userpasswd},#{userage}, #{usersex},#{email})
+	</insert>
+	
+	<select id="selectByNameAndPasswd" resultMap="BaseResultMap" >
+	 select * from user where username =#{name} and userpasswd= #{passwd}
+	</select>
+	
+	<select id="selectByName" resultMap="BaseResultMap" >
+	 select * from user where username =#{name}
+	</select>
+	
+	<update id="updateUser" parameterType="com.ttc.ssm.po.User">
+		update user set userage=#{userage},email=#{email},usersex=#{usersex}
+		where userid=#{userid}
+	</update>
+	
+	<update id="updateUserRole" parameterType="com.ttc.ssm.po.User">
+		update user set role=#{role},level=#{level} 
+		where userid=#{userid}
+	</update>
+	
+	<select id="selectAllUser" resultMap="BaseResultMap">
+		select * from user where role !="manager"
+	</select>
+	
+	<select id="selectAllIssuer" resultMap="BaseResultMap">
+		select * from user where role ="issuer"
+	</select>
+	
+	<delete id="deleteUser">
+		delete from user where userid=#{userid}
+	</delete>
+	
+	<select id="selectUserByKeywords" resultMap="BaseResultMap">
+		select * from user where username like '%${keywords}%'
+	</select>
+	
+</mapper>

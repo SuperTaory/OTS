@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ttc.ssm.mapper.TestMapper">
+	<resultMap id="BaseResultExamptionMap" type="com.ttc.ssm.po.Examption">
+		<id column="eid" property="eid" jdbcType="INTEGER" />
+		<result column="ename" property="ename" jdbcType="VARCHAR" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="ekind" property="ekind" jdbcType="VARCHAR" />
+		<result column="elevel" property="elevel" jdbcType="INTEGER" />
+		<result column="qnumbers" property="qnumbers" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="BaseResultQuestionMap" type="com.ttc.ssm.po.Question">
+		<id column="qid" property="qid" jdbcType="INTEGER" />
+		<result column="eid" property="eid" jdbcType="INTEGER" />
+		<result column="tword" property="tword" jdbcType="VARCHAR" />
+		<result column="tpic" property="tpic" jdbcType="VARCHAR" />
+		<result column="tvideo" property="tvideo" jdbcType="VARCHAR" />
+		<result column="taudio" property="taudio" jdbcType="VARCHAR" />
+		<result column="tflag" property="tflag" jdbcType="INTEGER" />
+		<result column="tanswer" property="tanswer" jdbcType="VARCHAR" />
+		<result column="tscore" property="tscore" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="BaseResultOptionsMap" type="com.ttc.ssm.po.Options">
+		<id column="oid" property="oid" jdbcType="INTEGER" />
+		<result column="qid" property="qid" jdbcType="INTEGER" />
+		<result column="eid" property="eid" jdbcType="INTEGER" />
+		<result column="aword" property="aword" jdbcType="VARCHAR" />
+		<result column="apic" property="apic" jdbcType="VARCHAR" />
+		<result column="ascore" property="ascore" jdbcType="INTEGER" />
+		<result column="bword" property="bword" jdbcType="VARCHAR" />
+		<result column="bpic" property="bpic" jdbcType="VARCHAR" />
+		<result column="bscore" property="bscore" jdbcType="INTEGER" />
+		<result column="cword" property="cword" jdbcType="VARCHAR" />
+		<result column="cpic" property="cpic" jdbcType="VARCHAR" />
+		<result column="cscore" property="cscore" jdbcType="INTEGER" />
+		<result column="dword" property="dword" jdbcType="VARCHAR" />
+		<result column="dpic" property="dpic" jdbcType="VARCHAR" />
+		<result column="dscore" property="dscore" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="BaseResultAnalysisMap" type="com.ttc.ssm.po.Analysis">
+		<id column="aid" property="aid" jdbcType="INTEGER" />
+		<result column="eid" property="eid" jdbcType="INTEGER" />
+		<result column="acontent1" property="acontent1" jdbcType="VARCHAR" />
+		<result column="acontent2" property="acontent2" jdbcType="VARCHAR" />
+		<result column="acontent3" property="acontent3" jdbcType="VARCHAR" />
+		<result column="acontent4" property="acontent4" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BaseResultHistoryMap" type="com.ttc.ssm.po.History">
+		<id column="hid" property="hid" jdbcType="INTEGER" />
+		<result column="eid" property="eid" jdbcType="INTEGER" />
+		<result column="ename" property="ename" jdbcType="VARCHAR" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="hscore" property="hscore" jdbcType="INTEGER" />
+		<result column="analysis" property="analysis" jdbcType="VARCHAR" />
+		<result column="testtime" property="testtime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<!--Examption 相关SQL语句 -->
+	<insert id="insert" parameterType="com.ttc.ssm.po.Examption">
+		insert into examption
+		(ename,username,ekind, elevel, qnumbers)
+		values
+		(#{ename},#{username},#{ekind}, #{elevel},#{qnumbers})
+	</insert>
+	<select id="selectByEname" resultMap="BaseResultExamptionMap">
+		select * from examption
+		where ename =#{ename}
+	</select>
+	<select id="selectByUsername" resultMap="BaseResultExamptionMap">
+		select * from examption
+		where username =#{username} order by eid desc
+	</select>
+	<select id="selectAllExamptions" resultMap="BaseResultExamptionMap">
+		select * from
+		examption order by eid desc
+	</select>
+	<update id="updateExamption">
+		update examption set ename =
+		#{ename} where eid =
+		#{eid}
+	</update>
+	<delete id="deleteExamByEid">
+		delete from examption where eid=#{eid}
+	</delete>
+	<update id="updateExamptionUKL">
+		update examption set username =
+		#{username},ekind=#{ekind},elevel=#{elevel} where eid = #{eid}
+	</update>
+	<update id="updateExamptionQnumbers">
+		update examption set qnumbers=qnumbers+1 where eid =
+		#{eid}
+	</update>
+	<update id="updateExamptionQnumbers2">
+		update examption set qnumbers=qnumbers-1 where eid =
+		#{eid}
+	</update>
+	<select id="selectExamptionByEid" resultMap="BaseResultExamptionMap">
+		select * from
+		examption where eid = #{eid}
+	</select>
+	<select id="selectLowExamption" resultMap="BaseResultExamptionMap">
+		select * from
+		examption where elevel = 1
+	</select>
+	<select id="selectExamByKeywords" resultMap="BaseResultExamptionMap">
+		select * from
+		examption where ename like '%${keywords}%'
+	</select>
+
+
+
+	<!--Question 相关SQL语句 -->
+	<insert id="insertQuestion" parameterType="com.ttc.ssm.po.Question">
+		insert into question
+		(eid,tword,tanswer, tscore,tpic,tvideo,taudio)
+		values
+		(#{eid},#{tword},#{tanswer},
+		#{tscore},#{tpic},#{tvideo},#{taudio})
+	</insert>
+	<select id="selectByQname" resultMap="BaseResultQuestionMap">
+		select * from question
+		where tword = #{qname}
+	</select>
+	<select id="selectQuestionByEid" resultMap="BaseResultQuestionMap">
+		select * from
+		question where eid = #{eid}
+	</select>
+	<delete id="deleteQuestionByQid">
+		delete from question where qid =#{qid}
+	</delete>
+	<select id="selectQuestionByQid" resultMap="BaseResultQuestionMap">
+		select * from
+		question where qid = #{qid}
+	</select>
+	<update id="updateQuestion" parameterType="com.ttc.ssm.po.Question">
+		update question set
+		tword=
+		#{tword},tanswer=#{tanswer},tscore=#{tscore},tpic=#{tpic},tvideo=#{tvideo},taudio=#{taudio}
+		where qid = #{qid}
+	</update>
+
+
+	<!--Options 相关SQL语句 -->
+	<select id="selectByQid" resultMap="BaseResultOptionsMap">
+		select * from options where
+		qid = #{qid}
+	</select>
+	<insert id="insertOption" parameterType="com.ttc.ssm.po.Options">
+		insert into options
+		(qid,eid,aword,apic,bword,bpic,cword,cpic,dword,dpic)
+		values
+		(#{qid},#{eid},#{aword},#{apic},#{bword},#{bpic},#{cword},#{cpic},#{dword},#{dpic})
+	</insert>
+	<select id="selectOptionsByEid" resultMap="BaseResultOptionsMap">
+		select * from options
+		where eid = #{eid}
+	</select>
+	<delete id="deleteOptionByOid">
+		delete from options where oid =#{oid}
+	</delete>
+	<update id="updateOptions" parameterType="com.ttc.ssm.po.Options">
+		update options set
+		aword=
+		#{aword},apic=#{apic},bword=#{bword},bpic=#{bpic},cword=#{cword},cpic=#{cpic},dword=#{dword},dpic=#{dpic}
+		where oid = #{oid}
+	</update>
+
+
+	<!--Analysis 相关SQL语句 -->
+	<select id="selectAnalysisByEid" resultMap="BaseResultAnalysisMap">
+		select * from
+		analysis where eid = #{eid}
+	</select>
+	<insert id="insertAnalysis" parameterType="com.ttc.ssm.po.Analysis">
+		insert into analysis
+		(eid,acontent1,acontent2,acontent3,acontent4)
+		values
+		(#{eid},#{acontent1},#{acontent2},#{acontent3},#{acontent4})
+	</insert>
+	<delete id="deleteAnalysisByAid">
+		delete from analysis where aid=#{aid}
+	</delete>
+	<update id="updateAnalysis" parameterType="com.ttc.ssm.po.Analysis">
+		update analysis set
+		eid=#{eid},acontent1=#{acontent1},acontent2=#{acontent2},acontent3=#{acontent3},acontent4=#{acontent4}
+		where aid = #{aid}
+	</update>
+
+	<!-- History 相关SQL语句 -->
+	<insert id="inserHistory" parameterType="com.ttc.ssm.po.History">
+		insert into history
+		(eid,ename,username,hscore,analysis,testtime)
+		values
+		(#{eid},#{ename},#{username},#{hscore},#{analysis},#{testtime})
+	</insert>
+	<select id="selectHistoriesByUsername" resultMap="BaseResultHistoryMap">
+		select * from
+		history where username=#{username} order by hid desc
+	</select>
+	<select id="selectHistoryByHid" resultMap="BaseResultHistoryMap">
+		select * from history
+		where hid=#{hid}
+	</select>
+	<select id="selectHistoriesByKeywords" resultMap="BaseResultHistoryMap">
+		select * from
+		history where ename like '%${keywords}%'
+		and username= #{username}
+	</select>
+	<delete id="deleteHistoryByHid">
+		delete from history where hid=#{hid}
+	</delete>
+
+</mapper>
